@@ -164,6 +164,8 @@ function DropioApiClient(the_api_key,the_xd_path) {
       if(params.token == null) params.token = "";
       var h4 = DOMHelper.createElement("input",{"type":"hidden","name":"token","value":params.token});
             
+      var h5 = DOMHelper.createElement("input",{"type":"hidden","name":"version","value":"1.0"});
+      
       // the file field label
       if( options.show_label == null || options.show_label == true ) {
         if( options.label == null ) options.label = "File: ";
@@ -192,6 +194,7 @@ function DropioApiClient(the_api_key,the_xd_path) {
       f.appendChild(h2);
       f.appendChild(h3);
       f.appendChild(h4);
+      f.appendChild(h5);
       if(l) f.appendChild(l);
       f.appendChild(fif);
       if( sb ) d.appendChild(sb);
@@ -257,6 +260,7 @@ function DropioApiClient(the_api_key,the_xd_path) {
           newparams[i] = params[i]
           
       newparams.api_key = this.api_key;
+      newparams.version = "1.0"
       
       // for sendAsset
       if( params.to_drop_name != null ) 
@@ -505,7 +509,7 @@ DropioApiClient.doRedirect = function(url,params) {
   sig = SHA1(unixutc+"+"+params.token+"+"+params.drop_name);
   exp = unixutc;
   
-  redirectTo = url + "?signature=" + sig + "&expires=" + exp;
+  redirectTo = url + "?version=1.0&signature=" + sig + "&expires=" + exp;
   if( params.first_admin != null ) redirectTo += "&first_admin=" + params.first_admin;
   top.location.href = redirectTo; 
 };
