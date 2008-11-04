@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<link rel="stylesheet" type="text/css" href="./hahastyles.css"/>
+  <script type="text/javascript" src="./dropioApiClient.js"></script>
+  <script type="text/javascript" src="./haha.js"></script>
+</head>
+<body>
+  <div class="header">
+    <span class="h1">H</span><span class="a1">a</span><span class="h2">h</span><span class="a2">a</span>, You're in a Photo!
+  </div>
+  
+  <div id="results" class="results">
+    <table class="photo" align="center" cellspacing="10px"><tbody id="container"></tbody></table>
+  </div>
+  
+  <br /><br />
+  
+  <div class="find_photos">
+    <form action="./photos_of.html" method="get">
+      Find Embarrasing Photos of: 
+      <input type="text" class="homepage_input" name="name" />
+      <input type="submit" class="homepage_btn" value="Go!" />
+    </form>
+  </div>
+    
+  <br /><br /><br />
+  
+  <div class="footer">
+    <a href="./index.html" class="footer">Home</a> |
+    <a href="./about.html" class="footer">About</a> |
+    <a href="./upload.html" class="footer">Upload an Embarrassing Photo of Someone</a> |
+    <a href="./see_all.html?page=1" class="footer">See All Embarrassing Photos</a>
+  </div>
+  
+  <script>
+    api.getDrop({drop_name:PHOTO_BUCKET}, getRecentPhotos);
+    
+    var lastPage = 0;
+    function getRecentPhotos(response,success) {
+        if(success) {
+          lastPage = Math.ceil(response.asset_count / 30)
+          api.getAssetList({drop_name:PHOTO_BUCKET,page:lastPage}, showRecentPhotos);
+        }
+        else
+          alert("Oops. Something went wrong: " + response.message);
+     }
+     
+     var i = 1;
+     function showRecentPhotos(response,success) { 
+        if(success) {
+          if( response.length != 0 ) {
+            for(i = 1; i <= 3; i++ ) {
+              if( response[response.length-i] ) {
+                createPhoto(response[response.length-i],false)
+              } else {
+                api.getAssetList({drop_name:PHOTO_BUCKET,page:lastPage-1}, showRemainingPhotos);
+                break;
+              }
+            }
+          }
+          else
+            document.getElementById("results").innerHTML = "No photos have been uploaded yet!"
+        }
+        else
+          alert("Oops. Something went wrong: " + response.message);
+     }
+     
+     function showRemainingPhotos(response,success) {
+        if(success) {
+          count = 1;
+          for(i = i; i <= 3; i++ ) {
+            createPhoto(response[response.length-count],false)
+            count++;
+          }
+        }
+        else
+          alert("Oops. Something went wrong: " + response.message);
+     }
+  </script>
+</body>
+</html>

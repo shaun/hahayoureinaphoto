@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<link rel="stylesheet" type="text/css" href="./hahastyles.css"/>
+  <script type="text/javascript" src="./dropioApiClient.js"></script>
+  <script type="text/javascript" src="./haha.js"></script>
+  <script>
+    var sname = getParam("name").replace(/\+/g," ");
+    asset_base_name = sname.replace(/[^A-Za-z]+/g,"-").toLowerCase();  
+  </script>
+</head>
+<body>
+  <div class="header">
+    <span class="h1">H</span><span class="a1">a</span><span class="h2">h</span><span class="a2">a</span>, You're in a Photo!
+  </div>
+  
+Ha! Ha! You're in a Photo is a simple, irreverent web site, utilizing drop.io's API javascript client library, that allows users to browse and upload photos. Ha! Ha! You're in a Photo forgoes the need for server-side scripting or a traditional database and demonstrates how developers can leverage drop.io and its API as a storage platform. Ha! Ha! You're in a Photo is comprised solely of a handful of static html pages and was built in less than a day.
+
+<br /><br />
+
+Most of the features of this site are straight forward to implement, but two of them are interesting to elaborate upon.
+
+<br /><br />
+The first is how the homepage grabs the three most recent photos. 
+The getAssetList API call only returns assets in groups of 30, and returns them in chronological order. Thus, page 1 contains the oldest photos. So, rather than looping through all pages until
+I find the last one, I simply make a getDrop call first, find out how many assets there are in total, then divide by 30 and round up to find the last page number in order to grab the last three photos. So,
+with only 2 API calls, I was able to implement a "get most recent" style of functionality.
+
+<br /><br />
+
+The next feature is being able to search for photos of a particular person without having to set up a database of my own or using server-side scripting. To do this, I mainly rely on Drop.io's naming conventions 
+whereby special characters are replaced with dashes, and if an asset is about to be saved with the same name as another already in the drop, a dash plus the next highest number is tagged on to the end of the name. 
+So, if an asset already in the drop is named "shaun-salzberg" and I try to save another with that name, it will be called "shaun-salzberg-2" and the next one will be called "shaun-salzberg-3". 
+
+<br /><br />
+
+What I would have liked to do
+was, when uploading a file, just specify that it should be named with the subject's name, and use the previously mentioned naming conventions to grab them later given the subject's name. However, in its current form, the API does not allow uploaded files
+to be named -- they are simply given the same name as the name of the file.
+
+<br /><br />
+
+The next thought was to use the updateAsset API call to update the photo's name once uploaded, but allowing guests to edit assets in a drop also means they are 
+allowed to delete them -- which would be bad since someone could then just go to my drop and delete all of the photos in it. 
+
+<br /><br />
+Finally, I decided to create two extra drops, to be used as my "databases". Every time a photo is uploaded, I create a note in the first drop, where its name is the user's name (modified by 
+the naming conventions mentioned earlier) and its contents are the name of the file that was just uploaded. I also create a note in the second drop with exactly the reverse name and contents. Now,
+when I need to find a photo by a particular user's name, I first find the corresponding note in the first drop, then look up the photo with the name specified in the contents. I can similarly use the
+second database drop to look up a user's name given the name of the photo for the "single photo" pages. By doing it this way, I can have all of this functionality without compromising the permission
+levels of these three drops.
+
+<br /><br />
+Clearly having to make all of these API calls just to load one photo is inefficient and slow, and if you were actually to make a site like this you would want to store some meta-data of the files in your own database to make 
+the searching faster. I just did it this way to demonstrate the functionality of the javascript library. 
+
+<br /><br />
+
+If you have any questions or comments about this site or the javascript library, please contact Shaun Salzberg (shaun@dropio.com). And special thanks to Alexa for coming up with "Haha, You're in a Photo" in the first place =)
+  
+   <br /><br /><br />
+  
+  
+  <div class="footer">
+    <a href="./index.html" class="footer">Home</a> |
+    <a href="./about.html" class="footer">About</a> |
+    <a href="./upload.html" class="footer">Upload an Embarassing Photo of Someone</a> |
+    <a href="./see_all.html?page=1" class="footer">See All Embarassing Photos</a>
+  </div>
+  
+</body>
+</html>

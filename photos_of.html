@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<link rel="stylesheet" type="text/css" href="./hahastyles.css"/>
+  <script type="text/javascript" src="./dropioApiClient.js"></script>
+  <script type="text/javascript" src="./haha.js"></script>
+  <script>
+    var sname = getParam("name").replace(/\+/g," ");
+    asset_base_name = sname.replace(/[^A-Za-z]+/g,"-").toLowerCase();  
+  </script>
+</head>
+<body>
+  <div class="header">
+    <span class="h1">H</span><span class="a1">a</span><span class="h2">h</span><span class="a2">a</span>, You're in a Photo!
+  </div>
+  
+  <div id="subtitle" class="subtitle"></div>
+   
+  <div id="results" class="results">
+    <table class="photo" align="center" cellspacing="10px"><tbody id="container"></tbody></table>
+  </div>
+  
+  <br /><br />
+  
+  <div class="upload_now">
+    <a id="upload_now" href="#" class="upload_now"></a>
+  </div>
+  
+  <br /><br /><br />
+  
+  
+  <div class="footer">
+    <a href="./index.html" class="footer">Home</a> |
+    <a href="./about.html" class="footer">About</a> |
+    <a href="./upload.html" class="footer">Upload an Embarrassing Photo of Someone</a> |
+    <a href="./see_all.html?page=1" class="footer">See All Embarrassing Photos</a>
+  </div>
+  
+  <script>
+   document.getElementById("subtitle").innerHTML = "Embarrassing photos of " + sname;
+   document.getElementById("upload_now").innerHTML = "Upload an embarrassing photo of " + sname + " now";
+   document.getElementById("upload_now").href = "./upload.html?name=" + sname;
+  
+   var pic = 1;
+   function getNextPic() {
+    aName = asset_base_name;
+    if( pic != 1 ) 
+      aName += "-" + pic
+    pic++
+    api.getAsset({drop_name:HAHA_DATABASE_FILENAMES,asset_name:aName},lookup_done);
+   }
+   
+   function lookup_done(response,success) {
+    if( success )
+      api.getAsset({drop_name:PHOTO_BUCKET,asset_name:response.contents},showPic);
+    else
+      if( pic == 2 )
+        document.getElementById("results").innerHTML = "Sorry, there are no embarrassing photos of " + sname
+   }
+    
+   function showPic(response,success) {
+    if(success) {
+      createPhoto(response,false)
+      getNextPic();
+    }
+    else {
+      if( pic == 2 )
+        document.getElementById("results").innerHTML = "Sorry, there are no embarrassing photos of " + sname
+    }
+   }
+   
+   getNextPic();
+  </script>
+</body>
+</html>
+    

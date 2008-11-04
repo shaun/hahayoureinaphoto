@@ -1,0 +1,170 @@
+body {
+  background-color: #E6E6E6;
+}
+
+div.header {
+  width: 600px;
+  text-align: center;
+  margin-left: auto;
+  margin-right:auto;
+  color: rgb(0,0,0);
+  font-size: 40px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+span.h1 { 
+  color: rgb(200,30,50);
+}
+span.a1 {
+  color: #0EDA12;
+}
+span.h2 {
+  color: rgb(200,0,200);
+}
+span.a2 {
+  color: rgb(0,200,200);
+}
+
+table.photo {
+}
+
+table.photo td {
+  width: 210px;
+  height: 210px;
+  margin-right: 5px;
+  background-color: rgb(200,200,200);
+  text-align: center;
+}
+
+table.photo td:hover {
+  background-color: rgb(100,100,100);
+  cursor: pointer;
+}
+
+table.photo td.large {
+  width: 410px;
+  height: 410px;
+  margin-right: 0px;
+  background-color: rgb(200,200,200);
+  text-align: center;
+}
+
+
+table.photo td.large:hover {
+  background-color: rgb(200,200,200);
+  cursor: default;
+}
+
+img.photo { 
+  width: auto;
+  max-height: 200px;
+  max-width: 200px;
+  padding: 5px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+img.large {
+  width: auto;
+  max-height: 400px;
+  max-width: 400px;
+}
+
+div.find_photos {
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+span.find_photos {
+  padding-bottom: 15px;
+}
+
+div.footer {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align:center;
+}
+
+a.footer {
+  font-size: 12px;
+  font-weight: bold;
+  color: black;
+}
+
+a.footer:hover {
+  text-decoration: underline;
+  color: rgb(50,50,50)
+}
+
+div.subtitle {
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding-bottom: 25px;
+  font-size: 20px;
+  color: black;
+}
+
+div.results {
+  width: 900px; 
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+div.upload_now {
+  width: 700px; 
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+a.upload_now {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+}
+
+a.upload_now:hover {
+  text-decoration: underline;
+  color: rgb(50,50,50)
+}
+
+div.center {
+  width: 700px; 
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+a.nav_link {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+}
+
+a.nav_link:hover {
+  text-decoration: underline;
+  color: rgb(50,50,50)
+}
+
+div.comments {
+  background-color: rgb(200,200,200);
+  width: 700px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+div.comment {
+  background-color: rgb(100,100,100);
+  padding: 5px; 
+  margin-bottom: 15px;
+  text-align:left;
+}
