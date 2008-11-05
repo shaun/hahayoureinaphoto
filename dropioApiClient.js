@@ -127,6 +127,7 @@ function DropioApiClient(the_api_key,the_xd_path) {
     *   label_id: the id of the label
     *   label: the text label to appear before the file chooser field, if show_label is set
     *   label_css: the css class for the label before the file chooser field, if show_label is set
+    *   file_input_css: the css class for the file input field
     *   show_submit_button: a boolean indicating whether or not to have create a submit button (true by default)
     *   submit_button_id: the id of the submit_button
     *   submit_button_label: the label to appear on the submit button
@@ -177,6 +178,7 @@ function DropioApiClient(the_api_key,the_xd_path) {
       
       // the file field
       var fif = DOMHelper.createElement("input",{"type":"file","name":"file","id":"file"});
+      if( options.file_input_css != null ) { fif.setAttribute("class",options.file_input_css); fif.className = options.file_input_css; }
       
       // the submit button
       var sb = null;
