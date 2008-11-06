@@ -6,78 +6,98 @@
   <script type="text/javascript" src="./haha.js"></script>
   <script>
     var sname = getParam("name");
-  </script>
+
+		window.onload = function() { setInterval ( "updateFaker()", 500 ); }
+
+		function updateFaker() {
+			document.getElementById('faker').value = document.getElementById('file').value;
+		}
+
+	</script>
+
 </head>
 <body>
-  <div class="header">
-    <span class="h1">H</span><span class="a1">a</span><span class="h2">h</span><span class="a2">a</span>, You're in a Photo!
-  </div>
+ 	<center>
+	<div id="container">	
+  	<form method="get" action="./photos_of.html">	
+	  <div class="header">
+	    <div id="menu">
+	    	<a href="index.html" class="menu_item">HOME</a>
+				<a class="devider">|</a>
+				<a href="upload.html" class="menu_item">UPLOAD A PHOTO</a>
+				<a class="devider">|</a>
+				<a class="menu_item_nh">SEARCH BY NAME:</a>
+				<input type="text" name="name" style="height:15px; border:none; background:#fff; width:120px; font-size:12px; margin-top:6px; margin-right:8px; "/>		
+	    </div>
+	  </div>
+	  </form>
   
-  <div id="subtitle" class="subtitle"></div> 
+	  <div id="subtitle" class="subtitle"></div>
   
-  <div class="upload_now">
-    <div id="insert"></div><br /><br />
-    This is an embarrassing photo of: 
-    <input type="text" id="name" /><br /><br />
-    <input type="submit" value="Upload This Photo!" onclick="upload_photo()" />
-  </div>  
+	  <div class="upload_now" style="margin-top:20px; padding-left:20px; font-size:28px;">
+			<div style="float:left; width:300px; padding-top:20px;">Photo:</div>
+			<div style="float:left;position:relative;">
+				<input type="text" id="faker" style="border:solid 3px #ccc; width:400px; font-size:40px; padding:5px; height:50px;" />
+	    	<div id="insert" style=""></div>
+			</div>
+			<br style="clear:both;"><br/>
+			<div style="float:left; width:300px; padding-top:20px;">This is a photo of:</div>
+	    <div style="float:left"><input type="text" id="name" style="border:solid 3px #ccc; width:400px; font-size:40px; padding:5px; height:50px;" /></div>
+			<br style="clear:both;"><br>
+	    <input type="submit" value="Upload This Photo!" onclick="upload_photo()" style="width:200px; height:60px; margin-left:300px;" />
+	  </div>  
       
-  <br /><br /><br />
+	  <br /><br /><br />
   
-  <div class="footer">
-    <a href="./index.html" class="footer" id="home_link">Home</a> |
-    <a href="./about.html" class="footer">About</a> |
-    <a href="./upload.html" class="footer">Upload an Embarrassing Photo of Someone</a> |
-    <a href="./see_all.html?page=1" class="footer">See All Embarrassing Photos</a>
-  </div>
   
-  <script>
-    thename = unescape(sname);
-    if(thename == "") thename = "someone"
-    document.getElementById("subtitle").innerHTML = "Upload an embarrassing photo of " + thename + " now!"
-    document.getElementById("name").value = unescape(sname);
+	  <script>
+	    thename = unescape(sname);
+	    if(thename == "") thename = "someone"
+	    document.getElementById("subtitle").innerHTML = "Upload an embarrassing photo of " + thename + " now!"
+	    document.getElementById("name").value = unescape(sname);
     
-    api.uploadFileForm({drop_name:PHOTO_BUCKET},done_uploading,{form_id:"upload_form",show_label:false,show_submit_button:false,insert_before:"insert"});
+	    api.uploadFileForm({drop_name:PHOTO_BUCKET},done_uploading,{form_id:"upload_form",show_label:false,show_submit_button:false,insert_before:"insert", file_input_css: "invisifile"});
   
-    function upload_photo() {
-      if( document.getElementById("name").value == "" ) {
-        alert("You have to tell us who this is a photo of!");
-        return;
-      }
+	    function upload_photo() {
+	      if( document.getElementById("name").value == "" ) {
+	        alert("You have to tell us who this is a photo of!");
+	        return;
+	      }
     
-      DropioApiClient.submitUploadForm("upload_form");
-    }
+	      DropioApiClient.submitUploadForm("upload_form");
+	    }
     
-    function done_uploading(response,success) {
-      if(success) {
-        if( response.type == "image" ) { 
-          noteName = document.getElementById("name").value
-          noteName = noteName.replace(/[^A-Za-z]+/g,"-"); 
-          noteName = noteName.replace(/-+/g,"-"); 
+	    function done_uploading(response,success) {
+	      if(success) {
+	        if( response.type == "image" ) { 
+	          noteName = document.getElementById("name").value
+	          noteName = noteName.replace(/[^A-Za-z]+/g,"-"); 
+	          noteName = noteName.replace(/-+/g,"-"); 
           
-          api.createNote({drop_name:HAHA_DATABASE_FILENAMES,title:noteName,contents:response.name},done_noting_filename);
-        }
-        else { 
-          alert("Oops. The file you uploaded wasn't an image!");
-        }
-      } else
-        alert("Oops. Something went wrong: " + response.message);
-    }
+	          api.createNote({drop_name:HAHA_DATABASE_FILENAMES,title:noteName,contents:response.name},done_noting_filename);
+	        }
+	        else { 
+	          alert("Oops. The file you uploaded wasn't an image!");
+	        }
+	      } else
+	        alert("Oops. Something went wrong: " + response.message);
+	    }
 
-    function done_noting_filename(response,success) {
-      if(success)
-        api.createNote({drop_name:HAHA_DATABASE_NAMES,title:response.contents,contents:response.name},done_noting_name);
-      else
-        alert("Oops. Something went wrong: " + response.message);
-    }
+	    function done_noting_filename(response,success) {
+	      if(success)
+	        api.createNote({drop_name:HAHA_DATABASE_NAMES,title:response.contents,contents:response.name},done_noting_name);
+	      else
+	        alert("Oops. Something went wrong: " + response.message);
+	    }
     
-    function done_noting_name(response,success) {
-      if(success)
-        alert("Your file was successfully uploaded!");
-      else
-        alert("Oops. Something went wrong: " + response.message);
-    }
-  </script>
-  
+	    function done_noting_name(response,success) {
+	      if(success)
+	        alert("Your file was successfully uploaded!");
+	      else
+	        alert("Oops. Something went wrong: " + response.message);
+	    }
+	  </script>
+  </div>
+	</center>
 </body>
 </html>

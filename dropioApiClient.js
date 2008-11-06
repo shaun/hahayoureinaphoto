@@ -3,29 +3,29 @@
 * Author: Shaun Salzberg (shaun@dropio.com)
 *
 * Example Usage:
-*   api = new DropioApiClient("[YOUR API KEY]")
-*   api.createDrop({"name":"somedrop"},callback);
-*   function callback(response,success) {
-*     if( success ) alert("Your drop name: " + response.name);
-*     else alert("There was some error: " + response.message);
-*   };
+* api = new DropioApiClient("[YOUR API KEY]")
+* api.createDrop({"name":"somedrop"},callback);
+* function callback(response,success) {
+* if( success ) alert("Your drop name: " + response.name);
+* else alert("There was some error: " + response.message);
+* };
 ******************************************************************/
-
-function DropioApiClient(the_api_key,the_xd_path) {   
-    this.api_key = the_api_key;         // the api key
+ 
+function DropioApiClient(the_api_key,the_xd_path) {
+    this.api_key = the_api_key; // the api key
     if( the_xd_path != null )
       DropioApiClient.xd_path = the_xd_path;
     else
       DropioApiClient.xd_path = "http://" + document.location.host + "/DropioJSClientXDReceiver.html";
-
+ 
     /************************************************************************************************************************
-    * The api calls
-    * Each method takes two arguments:
-    *   1) params - a json-style hash where the keys are the parameters specified in the Drop.io API docs
-    *   2) callback - a callback function to be called when the API call is complete. It gets passed two arguments:
-    *        a) response - a json-style hash containing the response from the server with the structure specified by the api docs
-    *        b) success - a boolean indicating whether or not the attempted api call was successful
-    **************************************************************************************************************************/ 
+* The api calls
+* Each method takes two arguments:
+* 1) params - a json-style hash where the keys are the parameters specified in the Drop.io API docs
+* 2) callback - a callback function to be called when the API call is complete. It gets passed two arguments:
+* a) response - a json-style hash containing the response from the server with the structure specified by the api docs
+* b) success - a boolean indicating whether or not the attempted api call was successful
+**************************************************************************************************************************/
     this.createDrop = function(params,callback) {
       this.sendApiRequest(DropioApiClient.createDropUrl(),DropioApiClient.CREATE_DROP_METHOD,params,callback);
     };
@@ -37,7 +37,7 @@ function DropioApiClient(the_api_key,the_xd_path) {
     
     this.redirectToDrop = function(params,callback) {
       if( !DropioApiClient.validateParams(params,DropioApiClient.REDIRECT_TO_DROP_ACTION,callback) ) return;
-      DropioApiClient.doRedirect(DropioApiClient.redirectToDropUrl(params.drop_name),params); 
+      DropioApiClient.doRedirect(DropioApiClient.redirectToDropUrl(params.drop_name),params);
     };
     
     this.updateDrop = function(params,callback) {
@@ -116,41 +116,41 @@ function DropioApiClient(the_api_key,the_xd_path) {
     };
     
     /***********************************************************************************************
-    * creates a form containing a input field of type file in order to upload a file via the API
-    * params - a json-style hash of parameters to be sent with the API call (see the API docs)
-    * callback - a function to be called when uploading is complete
-    * options - a json-style hash of options (see below)
-    * valid options are:
-    *   form_id: the id of the form
-    *   form_css: the css class for the form
-    *   show_label: a boolean indicating whether or not to create a label for the file chooser field (true by default)
-    *   label_id: the id of the label
-    *   label: the text label to appear before the file chooser field, if show_label is set
-    *   label_css: the css class for the label before the file chooser field, if show_label is set
-    *   file_input_css: the css class for the file input field
-    *   show_submit_button: a boolean indicating whether or not to have create a submit button (true by default)
-    *   submit_button_id: the id of the submit_button
-    *   submit_button_label: the label to appear on the submit button
-    *   submit_button_css: the css class for the submit button
-    *   insert_after: the id of an element to insert the form after
-    *   insert_before: the id of an element to insert the form before
-    *   append_to: the id of an element to append this form to
-    * If neither insert_before nor insert_after are specified, this will just return a reference
-    * to the containing div element that is created
-    *************************************************************************************************/ 
+* creates a form containing a input field of type file in order to upload a file via the API
+* params - a json-style hash of parameters to be sent with the API call (see the API docs)
+* callback - a function to be called when uploading is complete
+* options - a json-style hash of options (see below)
+* valid options are:
+* form_id: the id of the form
+* form_css: the css class for the form
+* show_label: a boolean indicating whether or not to create a label for the file chooser field (true by default)
+* label_id: the id of the label
+* label: the text label to appear before the file chooser field, if show_label is set
+* label_css: the css class for the label before the file chooser field, if show_label is set
+* file_input_css: the css class for the file input field
+* show_submit_button: a boolean indicating whether or not to have create a submit button (true by default)
+* submit_button_id: the id of the submit_button
+* submit_button_label: the label to appear on the submit button
+* submit_button_css: the css class for the submit button
+* insert_after: the id of an element to insert the form after
+* insert_before: the id of an element to insert the form before
+* append_to: the id of an element to append this form to
+* If neither insert_before nor insert_after are specified, this will just return a reference
+* to the containing div element that is created
+*************************************************************************************************/
     this.uploadFileForm = function(params,callback,options) {
       var drop_name = params.drop_name;
       
       params = this.cleanParams(params);
-
+ 
       // the containing div
       var d = DOMHelper.createElement("div");
   
-      // the form (uses innerHTML as a hack for IE so method/enctype work)  
+      // the form (uses innerHTML as a hack for IE so method/enctype work)
       var formstr = "<form action='"+DropioApiClient.createFileUrl()+"' method='post' enctype='multipart/form-data'";
       if( options.form_css != null ) formstr += " class='"+options.form_css+"'"
-      if( options.form_id != null )  formstr += " id='"+options.form_id+"'"
-      else formstr += "id ='dropio_js_api_upload_form"+(Math.round(Math.random()*9999999))+"'";  // the random id is so IE doesnt cache it
+      if( options.form_id != null ) formstr += " id='"+options.form_id+"'"
+      else formstr += "id ='dropio_js_api_upload_form"+(Math.round(Math.random()*9999999))+"'"; // the random id is so IE doesnt cache it
       formstr += "></form>"
       d.innerHTML = formstr;
       var f = d.firstChild;
@@ -188,7 +188,7 @@ function DropioApiClient(the_api_key,the_xd_path) {
         if( options.submit_button_css != null ) { sb.setAttribute("class",options.submit_button_css); sb.className = options.submit_button_css; }
          if( options.submit_button_id != null ) { sb.setAttribute("id",options.submit_button_id); sb.id = options.submit_button_id; }
          sb.onclick = function() { DropioApiClient.submitUploadForm(f.id,callback); }
-      }   
+      }
       
       // build the form
       // appendChild is used rather than insert to appease IE
@@ -219,16 +219,16 @@ function DropioApiClient(the_api_key,the_xd_path) {
     };
     
     /********************************
-    * sends the actual api request
-    * (for all but creating a file)
-    ********************************/  
-    this.sendApiRequest = function(url,method,params,callback) {        
-      params = this.cleanParams(params); 
+* sends the actual api request
+* (for all but creating a file)
+********************************/
+    this.sendApiRequest = function(url,method,params,callback) {
+      params = this.cleanParams(params);
       
       // create form
       var f = DOMHelper.createElement("form",{action:url,method:"POST",style:"display:none"});
       f.id = "dropio_api_call_form_" + ((Math.round(Math.random()*9999999))); // the random id is so IE doesnt cache it
-
+ 
       
       // create hidden params
       for( i in params ) {
@@ -243,17 +243,17 @@ function DropioApiClient(the_api_key,the_xd_path) {
       // format
       var hf = DOMHelper.createElement("input",{type:"hidden",name:"format",value:"jtext"});
       f.appendChild(hf);
-
+ 
       document.body.appendChild(f);
-
+ 
       DropioApiClient.AIM.submit(f,callback,false);
       
       document.body.removeChild(f)
     };
     
     /********************************
-    * utility functions
-    ********************************/
+* utility functions
+********************************/
     this.cleanParams = function(params) {
       newparams = {}
       
@@ -265,84 +265,84 @@ function DropioApiClient(the_api_key,the_xd_path) {
       newparams.version = "1.0"
       
       // for sendAsset
-      if( params.to_drop_name != null ) 
+      if( params.to_drop_name != null )
         newparams.drop_name = params.to_drop_name
       
       return newparams;
     };
 };
-
+ 
 /**********************************************************
 * Define class variables and methods for DropioApiClient
 ***********************************************************/
-DropioApiClient.HOST =         "http://drop.io/";
-DropioApiClient.API_HOST =     "http://api.drop.io/";
-DropioApiClient.UPLOAD_HOST =  "http://assets.drop.io/";
-
+DropioApiClient.HOST = "http://drop.io/";
+DropioApiClient.API_HOST = "http://api.drop.io/";
+DropioApiClient.UPLOAD_HOST = "http://assets.drop.io/";
+ 
 // the api call urls
 // uses {drop_name}, {asset_name}, and {comment_id} as placeholders
 // use the corresponding getter methods to retrieve the urls with the substitutions
-DropioApiClient.CREATE_DROP_URL =        "drops";
-DropioApiClient.GET_DROP_URL =           "drops/{drop_name}";
-DropioApiClient.REDIRECT_TO_DROP_URL =   "{drop_name}/from_api";
-DropioApiClient.UPDATE_DROP_URL =        "drops/{drop_name}";
-DropioApiClient.DELETE_DROP_URL =        "drops/{drop_name}";
-DropioApiClient.CREATE_LINK_URL =        "drops/{drop_name}/assets";
-DropioApiClient.CREATE_NOTE_URL =        "drops/{drop_name}/assets";
-DropioApiClient.CREATE_FILE_URL =        "upload";
-DropioApiClient.GET_ASSET_LIST_URL =     "drops/{drop_name}/assets";
-DropioApiClient.GET_ASSET_URL =          "drops/{drop_name}/assets/{asset_name}";
-DropioApiClient.REDIRECT_TO_ASSET_URL =  "{drop_name}/asset/{asset_name}/from_api";
-DropioApiClient.UPDATE_ASSET_URL =       "drops/{drop_name}/assets/{asset_name}";
-DropioApiClient.DELETE_ASSET_URL =       "drops/{drop_name}/assets/{asset_name}";
-DropioApiClient.SEND_ASSET_URL =         "drops/{drop_name}/assets/{asset_name}/send_to";
-DropioApiClient.GET_COMMENT_LIST_URL =   "drops/{drop_name}/assets/{asset_name}/comments";
-DropioApiClient.CREATE_COMMENT_URL =     "drops/{drop_name}/assets/{asset_name}/comments";
-DropioApiClient.GET_COMMENT_URL =        "drops/{drop_name}/assets/{asset_name}/comments/{comment_id}";
-DropioApiClient.UPDATE_COMMENT_URL =     "drops/{drop_name}/assets/{asset_name}/comments/{comment_id}";
-DropioApiClient.DELETE_COMMENT_URL =     "drops/{drop_name}/assets/{asset_name}/comments/{comment_id}";
-
+DropioApiClient.CREATE_DROP_URL = "drops";
+DropioApiClient.GET_DROP_URL = "drops/{drop_name}";
+DropioApiClient.REDIRECT_TO_DROP_URL = "{drop_name}/from_api";
+DropioApiClient.UPDATE_DROP_URL = "drops/{drop_name}";
+DropioApiClient.DELETE_DROP_URL = "drops/{drop_name}";
+DropioApiClient.CREATE_LINK_URL = "drops/{drop_name}/assets";
+DropioApiClient.CREATE_NOTE_URL = "drops/{drop_name}/assets";
+DropioApiClient.CREATE_FILE_URL = "upload";
+DropioApiClient.GET_ASSET_LIST_URL = "drops/{drop_name}/assets";
+DropioApiClient.GET_ASSET_URL = "drops/{drop_name}/assets/{asset_name}";
+DropioApiClient.REDIRECT_TO_ASSET_URL = "{drop_name}/asset/{asset_name}/from_api";
+DropioApiClient.UPDATE_ASSET_URL = "drops/{drop_name}/assets/{asset_name}";
+DropioApiClient.DELETE_ASSET_URL = "drops/{drop_name}/assets/{asset_name}";
+DropioApiClient.SEND_ASSET_URL = "drops/{drop_name}/assets/{asset_name}/send_to";
+DropioApiClient.GET_COMMENT_LIST_URL = "drops/{drop_name}/assets/{asset_name}/comments";
+DropioApiClient.CREATE_COMMENT_URL = "drops/{drop_name}/assets/{asset_name}/comments";
+DropioApiClient.GET_COMMENT_URL = "drops/{drop_name}/assets/{asset_name}/comments/{comment_id}";
+DropioApiClient.UPDATE_COMMENT_URL = "drops/{drop_name}/assets/{asset_name}/comments/{comment_id}";
+DropioApiClient.DELETE_COMMENT_URL = "drops/{drop_name}/assets/{asset_name}/comments/{comment_id}";
+ 
 // the api call methods
-DropioApiClient.CREATE_DROP_METHOD =        "post";
-DropioApiClient.GET_DROP_METHOD =           "get";
-DropioApiClient.REDIRECT_TO_DROP_METHOD =   "get";
-DropioApiClient.UPDATE_DROP_METHOD =        "put";
-DropioApiClient.DELETE_DROP_METHOD =        "delete";
-DropioApiClient.CREATE_LINK_METHOD =        "post";
-DropioApiClient.CREATE_NOTE_METHOD =        "post";
-DropioApiClient.CREATE_FILE_METHOD =        "post";
-DropioApiClient.GET_ASSET_LIST_METHOD =     "get";
-DropioApiClient.GET_ASSET_METHOD =          "get";
-DropioApiClient.REDIRECT_TO_ASSET_METHOD =  "get";
-DropioApiClient.UPDATE_ASSET_METHOD =       "put";
-DropioApiClient.DELETE_ASSET_METHOD =       "delete";
-DropioApiClient.SEND_ASSET_METHOD =         "post";
-DropioApiClient.GET_COMMENT_LIST_METHOD =   "get";
-DropioApiClient.CREATE_COMMENT_METHOD =     "post";
-DropioApiClient.GET_COMMENT_METHOD =        "get";
-DropioApiClient.UPDATE_COMMENT_METHOD =     "put";
-DropioApiClient.DELETE_COMMENT_METHOD =     "delete";
+DropioApiClient.CREATE_DROP_METHOD = "post";
+DropioApiClient.GET_DROP_METHOD = "get";
+DropioApiClient.REDIRECT_TO_DROP_METHOD = "get";
+DropioApiClient.UPDATE_DROP_METHOD = "put";
+DropioApiClient.DELETE_DROP_METHOD = "delete";
+DropioApiClient.CREATE_LINK_METHOD = "post";
+DropioApiClient.CREATE_NOTE_METHOD = "post";
+DropioApiClient.CREATE_FILE_METHOD = "post";
+DropioApiClient.GET_ASSET_LIST_METHOD = "get";
+DropioApiClient.GET_ASSET_METHOD = "get";
+DropioApiClient.REDIRECT_TO_ASSET_METHOD = "get";
+DropioApiClient.UPDATE_ASSET_METHOD = "put";
+DropioApiClient.DELETE_ASSET_METHOD = "delete";
+DropioApiClient.SEND_ASSET_METHOD = "post";
+DropioApiClient.GET_COMMENT_LIST_METHOD = "get";
+DropioApiClient.CREATE_COMMENT_METHOD = "post";
+DropioApiClient.GET_COMMENT_METHOD = "get";
+DropioApiClient.UPDATE_COMMENT_METHOD = "put";
+DropioApiClient.DELETE_COMMENT_METHOD = "delete";
   
 // the dropio api client method action
-DropioApiClient.CREATE_DROP_ACTION =        "create_drop";
-DropioApiClient.GET_DROP_ACTION =           "get_drop";
-DropioApiClient.REDIRECT_TO_DROP_ACTION =   "redirect_to_drop";
-DropioApiClient.UPDATE_DROP_ACTION =        "update_drop";
-DropioApiClient.DELETE_DROP_ACTION =        "delete_drop";
-DropioApiClient.CREATE_LINK_ACTION =        "create_link";
-DropioApiClient.CREATE_NOTE_ACTION =        "create_note";
-DropioApiClient.CREATE_FILE_ACTION =        "create_file";
-DropioApiClient.GET_ASSET_LIST_ACTION =     "get_asset_list";
-DropioApiClient.GET_ASSET_ACTION =          "get_asset";
-DropioApiClient.REDIRECT_TO_ASSET_ACTION =  "redirect_to_asset";
-DropioApiClient.UPDATE_ASSET_ACTION =       "update_asset";
-DropioApiClient.DELETE_ASSET_ACTION =       "delete_asset";
-DropioApiClient.SEND_ASSET_ACTION =         "send_asset";
-DropioApiClient.GET_COMMENT_LIST_ACTION =   "get_comment_list";
-DropioApiClient.CREATE_COMMENT_ACTION =     "create_comment";
-DropioApiClient.GET_COMMENT_ACTION =        "get_comment";
-DropioApiClient.UPDATE_COMMENT_ACTION =     "update_comment";
-DropioApiClient.DELETE_COMMENT_ACTION =     "delete_comment";
+DropioApiClient.CREATE_DROP_ACTION = "create_drop";
+DropioApiClient.GET_DROP_ACTION = "get_drop";
+DropioApiClient.REDIRECT_TO_DROP_ACTION = "redirect_to_drop";
+DropioApiClient.UPDATE_DROP_ACTION = "update_drop";
+DropioApiClient.DELETE_DROP_ACTION = "delete_drop";
+DropioApiClient.CREATE_LINK_ACTION = "create_link";
+DropioApiClient.CREATE_NOTE_ACTION = "create_note";
+DropioApiClient.CREATE_FILE_ACTION = "create_file";
+DropioApiClient.GET_ASSET_LIST_ACTION = "get_asset_list";
+DropioApiClient.GET_ASSET_ACTION = "get_asset";
+DropioApiClient.REDIRECT_TO_ASSET_ACTION = "redirect_to_asset";
+DropioApiClient.UPDATE_ASSET_ACTION = "update_asset";
+DropioApiClient.DELETE_ASSET_ACTION = "delete_asset";
+DropioApiClient.SEND_ASSET_ACTION = "send_asset";
+DropioApiClient.GET_COMMENT_LIST_ACTION = "get_comment_list";
+DropioApiClient.CREATE_COMMENT_ACTION = "create_comment";
+DropioApiClient.GET_COMMENT_ACTION = "get_comment";
+DropioApiClient.UPDATE_COMMENT_ACTION = "update_comment";
+DropioApiClient.DELETE_COMMENT_ACTION = "delete_comment";
   
 // the actions that require drop_name validation
 DropioApiClient.DROP_NAME_VALIDATIONS =
@@ -378,7 +378,7 @@ DropioApiClient.ASSET_NAME_VALIDATIONS =
                           DropioApiClient.DELETE_COMMENT_ACTION];
                           
 // the actions that need comment_id validation
-DropioApiClient.COMMENT_ID_VALIDATIONS = 
+DropioApiClient.COMMENT_ID_VALIDATIONS =
                         [DropioApiClient.GET_COMMENT_ACTION,
                          DropioApiClient.UPDATE_COMMENT_ACTION,
                          DropioApiClient.DELETE_COMMENT_ACTION];
@@ -389,79 +389,79 @@ DropioApiClient.COMMENT_ID_VALIDATIONS =
 DropioApiClient.createDropUrl = function() {
   return DropioApiClient.API_HOST + DropioApiClient.CREATE_DROP_URL;
 };
-
+ 
 DropioApiClient.getDropUrl = function(the_drop_name) {
   return DropioApiClient.API_HOST + DropioApiClient.GET_DROP_URL.replace(/{drop_name}/,the_drop_name);
 };
-
+ 
 DropioApiClient.redirectToDropUrl = function(the_drop_name) {
   return DropioApiClient.HOST + DropioApiClient.REDIRECT_TO_DROP_URL.replace(/{drop_name}/,the_drop_name);
 };
-
+ 
 DropioApiClient.updateDropUrl = function(the_drop_name) {
   return DropioApiClient.API_HOST + DropioApiClient.UPDATE_DROP_URL.replace(/{drop_name}/,the_drop_name);
 };
-
+ 
 DropioApiClient.deleteDropUrl = function(the_drop_name) {
   return DropioApiClient.API_HOST + DropioApiClient.DELETE_DROP_URL.replace(/{drop_name}/,the_drop_name);
 };
-
+ 
 DropioApiClient.createLinkUrl = function(the_drop_name) {
   return DropioApiClient.API_HOST + DropioApiClient.CREATE_LINK_URL.replace(/{drop_name}/,the_drop_name);
 };
-
+ 
 DropioApiClient.createNoteUrl = function(the_drop_name) {
   return DropioApiClient.API_HOST + DropioApiClient.CREATE_NOTE_URL.replace(/{drop_name}/,the_drop_name);
 };
-
+ 
 DropioApiClient.createFileUrl = function() {
   return DropioApiClient.UPLOAD_HOST + DropioApiClient.CREATE_FILE_URL;
 };
-
+ 
 DropioApiClient.getAssetListUrl = function(the_drop_name) {
   return DropioApiClient.API_HOST + DropioApiClient.GET_ASSET_LIST_URL.replace(/{drop_name}/,the_drop_name);
 };
-
+ 
 DropioApiClient.getAssetUrl = function(the_drop_name,the_asset_name) {
   return DropioApiClient.API_HOST + DropioApiClient.GET_ASSET_URL.replace(/{drop_name}/,the_drop_name).replace(/{asset_name}/,the_asset_name);
 };
-
+ 
 DropioApiClient.redirectToAssetUrl = function(the_drop_name,the_asset_name) {
   return DropioApiClient.HOST + DropioApiClient.REDIRECT_TO_ASSET_URL.replace(/{drop_name}/,the_drop_name).replace(/{asset_name}/,the_asset_name);
 };
-
+ 
 DropioApiClient.updateAssetUrl = function(the_drop_name,the_asset_name) {
   return DropioApiClient.API_HOST + DropioApiClient.UPDATE_ASSET_URL.replace(/{drop_name}/,the_drop_name).replace(/{asset_name}/,the_asset_name);
 };
-
+ 
 DropioApiClient.deleteAssetUrl = function(the_drop_name,the_asset_name) {
   return DropioApiClient.API_HOST + DropioApiClient.DELETE_ASSET_URL.replace(/{drop_name}/,the_drop_name).replace(/{asset_name}/,the_asset_name);
 };
-
+ 
 DropioApiClient.sendAssetUrl = function(the_drop_name,the_asset_name) {
   return DropioApiClient.API_HOST + DropioApiClient.SEND_ASSET_URL.replace(/{drop_name}/,the_drop_name).replace(/{asset_name}/,the_asset_name);
 };
-
+ 
 DropioApiClient.getCommentListUrl = function(the_drop_name,the_asset_name) {
   return DropioApiClient.API_HOST + DropioApiClient.GET_COMMENT_LIST_URL.replace(/{drop_name}/,the_drop_name).replace(/{asset_name}/,the_asset_name);
 };
-
+ 
 DropioApiClient.createCommentUrl = function(the_drop_name,the_asset_name) {
   return DropioApiClient.API_HOST + DropioApiClient.CREATE_COMMENT_URL.replace(/{drop_name}/,the_drop_name).replace(/{asset_name}/,the_asset_name);
 };
-
+ 
 DropioApiClient.getCommentUrl = function(the_drop_name,the_asset_name,the_comment_id) {
   return DropioApiClient.API_HOST + DropioApiClient.GET_COMMENT_URL.replace(/{drop_name}/,the_drop_name).replace(/{asset_name}/,the_asset_name).replace(/{comment_id}/,the_comment_id);
 };
-
+ 
 DropioApiClient.updateCommentUrl = function(the_drop_name,the_asset_name,the_comment_id) {
   return DropioApiClient.API_HOST + DropioApiClient.UPDATE_COMMENT_URL.replace(/{drop_name}/,the_drop_name).replace(/{asset_name}/,the_asset_name).replace(/{comment_id}/,the_comment_id);
 };
-
+ 
 DropioApiClient.deleteCommentUrl = function(the_drop_name,the_asset_name,the_comment_id) {
   return DropioApiClient.API_HOST + DropioApiClient.DELETE_COMMENT_URL.replace(/{drop_name}/,the_drop_name).replace(/{asset_name}/,the_asset_name).replace(/{comment_id}/,the_comment_id);
 };
-
+ 
 // validations
 DropioApiClient.validateParams = function(the_params,the_action,the_callback) {
   var dnamevalid = DropioApiClient.DROP_NAME_VALIDATIONS.indexOf(the_action) == -1 || DropioApiClient.validate(the_params.drop_name);
@@ -487,25 +487,25 @@ DropioApiClient.validate = function(the_param) {
 DropioApiClient.updateDropNameForUploadForm = function(form_id,drop_name) {
   DOMHelper.getElementById(form_id).drop_name.value = drop_name;
 };
-
+ 
 // updates the token parameter to be submitted with a form
 // created with uploadFileForm
 DropioApiClient.updateTokenForUploadForm = function(form_id,token) {
   DOMHelper.getElementById(form_id).token.value = token;
 };
-
+ 
 // updates the callback for a form created with uploadFileForm
 DropioApiClient.updateCallbackForUploadForm = function(form_id,new_callback) {
   DOMHelper.getElementById(form_id).onsubmit = new_callback
 };
-
+ 
 // submits a form created by uploadFileForm
 // use this rather than simply submit()
 DropioApiClient.submitUploadForm = function(form_id) {
     var f = DOMHelper.getElementById(form_id)
     DropioApiClient.AIM.submit(f,f.onsubmit,true);
 };
-
+ 
 DropioApiClient.doRedirect = function(url,params) {
   unixutc = Math.round(Date.parse(new Date().toUTCString()) / 1000) + 10 * 60;
   sig = SHA1(unixutc+"+"+params.token+"+"+params.drop_name);
@@ -513,14 +513,14 @@ DropioApiClient.doRedirect = function(url,params) {
   
   redirectTo = url + "?version=1.0&signature=" + sig + "&expires=" + exp;
   if( params.first_admin != null ) redirectTo += "&first_admin=" + params.first_admin;
-  top.location.href = redirectTo; 
+  top.location.href = redirectTo;
 };
-
-DropioApiClient.local = false;   // for local dev, this should be true
-
+ 
+DropioApiClient.local = false; // for local dev, this should be true
+ 
 /***************************************************
-*  THE AWESOME PATENTED* DROPIO AJAX IFRAME METHOD
-*  (*) not really patented
+* THE AWESOME PATENTED* DROPIO AJAX IFRAME METHOD
+* (*) not really patented
 ***************************************************/
 DropioApiClient.AIM = {};
 DropioApiClient.AIM.call_in_progress = false;
@@ -531,17 +531,17 @@ DropioApiClient.AIM.submit = function(form_elem,callback,upload) {
   var name = "dropio_js_client_xd_receiver_" + ((Math.round(Math.random()*9999999))); // the random id is so IE doesnt cache it
  
   // the iframe thats the target of the form submission
-  var d	= DOMHelper.createElement("div");
-  d.innerHTML =	"<iframe style='width:0px;height:0px;border:0px' src='about:blank' name='"+name+"' id='"+name+"' onload='DropioApiClient.AIM.addWatcherIframe(\""+name+"\","+upload+");'></iframe>";  // uses innerHTML as hack for IE so onload works
+  var d  = DOMHelper.createElement("div");
+  d.innerHTML =  "<iframe style='width:0px;height:0px;border:0px' src='about:blank' name='"+name+"' id='"+name+"' onload='DropioApiClient.AIM.addWatcherIframe(\""+name+"\","+upload+");'></iframe>"; // uses innerHTML as hack for IE so onload works
   document.body.appendChild(d);
   
   var i_target = DOMHelper.getElementById(name);
   i_target.onComplete = callback;
-
+ 
   form_elem.target = name;
   form_elem.submit();
 };
-
+ 
 DropioApiClient.AIM.addWatcherIframe = function(name,upload) {
   // the iframe that watches the response coming into the first iframe
   var watcher_host = upload ? DropioApiClient.UPLOAD_HOST : ((DropioApiClient.local ? DropioApiClient.HOST : DropioApiClient.API_HOST) + "javascripts/");
@@ -553,12 +553,12 @@ DropioApiClient.AIM.addWatcherIframe = function(name,upload) {
 DropioApiClient.AIM.responseJSON = "";
 DropioApiClient.AIM.parseResult = function(name,json,more) {
   DropioApiClient.AIM.responseJSON += json;
-
+ 
   // if there is more of the message, wait for it
   if(more) return;
     
   var i = DOMHelper.getElementById(name);
-
+ 
   // get the json from the identifer in the url
   var beg = DropioApiClient.AIM.responseJSON.indexOf("{");
   if( DropioApiClient.AIM.responseJSON.indexOf("[") < beg ) beg = DropioApiClient.AIM.responseJSON.indexOf("[");
@@ -586,12 +586,12 @@ DropioApiClient.AIM.parseResult = function(name,json,more) {
   DropioApiClient.AIM.call_in_progress = false;
   
   i.onComplete(json,success);
-
+ 
   
 };
-
+ 
 /**
-*  various utility functions to make this cross browser compatible without prototype
+* various utility functions to make this cross browser compatible without prototype
 **/
 var DOMHelper = {
   createElement: function(elem,attrs) {
@@ -608,7 +608,7 @@ var DOMHelper = {
       for( i in attrs )
         e.setAttribute(i,attrs[i]);
     }
-
+ 
     return e;
   },
   
@@ -631,7 +631,7 @@ var DOMHelper = {
     x.parentNode.appendChild(elem,x);
   }
 };
-
+ 
 /* Create an indexOf method for Array if this is IE */
 if(!Array.indexOf){
     Array.prototype.indexOf = function(obj){
@@ -643,27 +643,27 @@ if(!Array.indexOf){
         return -1;
     }
 }
-
+ 
 /**
 * (for redirect to drop / asset )
-*  Secure Hash Algorithm (SHA1)
-*  http://www.webtoolkit.info/
+* Secure Hash Algorithm (SHA1)
+* http://www.webtoolkit.info/
 *
 **/
-
+ 
 function SHA1 (msg) {
-
+ 
     function rotate_left(n,s) {
         var t4 = ( n<<s ) | (n>>>(32-s));
         return t4;
     };
-
+ 
     function lsb_hex(val) {
         var str="";
         var i;
         var vh;
         var vl;
-
+ 
         for( i=0; i<=6; i+=2 ) {
             vh = (val>>>(i*4+4))&0x0f;
             vl = (val>>>(i*4))&0x0f;
@@ -671,28 +671,28 @@ function SHA1 (msg) {
         }
         return str;
     };
-
+ 
     function cvt_hex(val) {
         var str="";
         var i;
         var v;
-
+ 
         for( i=7; i>=0; i-- ) {
             v = (val>>>(i*4))&0x0f;
             str += v.toString(16);
         }
         return str;
     };
-
-
+ 
+ 
     function Utf8Encode(string) {
         string = string.replace(/\r\n/g,"\n");
         var utftext = "";
-
+ 
         for (var n = 0; n < string.length; n++) {
-
+ 
             var c = string.charCodeAt(n);
-
+ 
             if (c < 128) {
                 utftext += String.fromCharCode(c);
             }
@@ -705,12 +705,12 @@ function SHA1 (msg) {
                 utftext += String.fromCharCode(((c >> 6) & 63) | 128);
                 utftext += String.fromCharCode((c & 63) | 128);
             }
-
+ 
         }
-
+ 
         return utftext;
     };
-
+ 
     var blockstart;
     var i, j;
     var W = new Array(80);
@@ -721,18 +721,18 @@ function SHA1 (msg) {
     var H4 = 0xC3D2E1F0;
     var A, B, C, D, E;
     var temp;
-
+ 
     msg = Utf8Encode(msg);
-
+ 
     var msg_len = msg.length;
-
+ 
     var word_array = new Array();
     for( i=0; i<msg_len-3; i+=4 ) {
         j = msg.charCodeAt(i)<<24 | msg.charCodeAt(i+1)<<16 |
         msg.charCodeAt(i+2)<<8 | msg.charCodeAt(i+3);
         word_array.push( j );
     }
-
+ 
     switch( msg_len % 4 ) {
         case 0:
             i = 0x080000000;
@@ -740,35 +740,35 @@ function SHA1 (msg) {
         case 1:
             i = msg.charCodeAt(msg_len-1)<<24 | 0x0800000;
         break;
-
+ 
         case 2:
             i = msg.charCodeAt(msg_len-2)<<24 | msg.charCodeAt(msg_len-1)<<16 | 0x08000;
         break;
-
+ 
         case 3:
-            i = msg.charCodeAt(msg_len-3)<<24 | msg.charCodeAt(msg_len-2)<<16 | msg.charCodeAt(msg_len-1)<<8    | 0x80;
+            i = msg.charCodeAt(msg_len-3)<<24 | msg.charCodeAt(msg_len-2)<<16 | msg.charCodeAt(msg_len-1)<<8 | 0x80;
         break;
     }
-
+ 
     word_array.push( i );
-
+ 
     while( (word_array.length % 16) != 14 ) word_array.push( 0 );
-
+ 
     word_array.push( msg_len>>>29 );
     word_array.push( (msg_len<<3)&0x0ffffffff );
-
-
+ 
+ 
     for ( blockstart=0; blockstart<word_array.length; blockstart+=16 ) {
-
+ 
         for( i=0; i<16; i++ ) W[i] = word_array[blockstart+i];
         for( i=16; i<=79; i++ ) W[i] = rotate_left(W[i-3] ^ W[i-8] ^ W[i-14] ^ W[i-16], 1);
-
+ 
         A = H0;
         B = H1;
         C = H2;
         D = H3;
         E = H4;
-
+ 
         for( i= 0; i<=19; i++ ) {
             temp = (rotate_left(A,5) + ((B&C) | (~B&D)) + E + W[i] + 0x5A827999) & 0x0ffffffff;
             E = D;
@@ -777,7 +777,7 @@ function SHA1 (msg) {
             B = A;
             A = temp;
         }
-
+ 
         for( i=20; i<=39; i++ ) {
             temp = (rotate_left(A,5) + (B ^ C ^ D) + E + W[i] + 0x6ED9EBA1) & 0x0ffffffff;
             E = D;
@@ -786,7 +786,7 @@ function SHA1 (msg) {
             B = A;
             A = temp;
         }
-
+ 
         for( i=40; i<=59; i++ ) {
             temp = (rotate_left(A,5) + ((B&C) | (B&D) | (C&D)) + E + W[i] + 0x8F1BBCDC) & 0x0ffffffff;
             E = D;
@@ -795,7 +795,7 @@ function SHA1 (msg) {
             B = A;
             A = temp;
         }
-
+ 
         for( i=60; i<=79; i++ ) {
             temp = (rotate_left(A,5) + (B ^ C ^ D) + E + W[i] + 0xCA62C1D6) & 0x0ffffffff;
             E = D;
@@ -804,17 +804,17 @@ function SHA1 (msg) {
             B = A;
             A = temp;
         }
-
+ 
         H0 = (H0 + A) & 0x0ffffffff;
         H1 = (H1 + B) & 0x0ffffffff;
         H2 = (H2 + C) & 0x0ffffffff;
         H3 = (H3 + D) & 0x0ffffffff;
         H4 = (H4 + E) & 0x0ffffffff;
-
+ 
     }
-
+ 
     var temp = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
-
+ 
     return temp.toLowerCase();
-
+ 
 }

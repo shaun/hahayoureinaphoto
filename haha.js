@@ -3,7 +3,9 @@ var next_pic = 1;
 function createPhoto(response,large) {
   if( response.type == "image" ) {
     if( response.converted != null && response.converted != "" ) {
-      if( cur_row == null || next_pic == 5 ) {
+      
+/*
+			if( cur_row == null || next_pic == 5 ) {
         cur_row = document.createElement("tr");
         next_pic = 1;
       }
@@ -12,18 +14,17 @@ function createPhoto(response,large) {
       if( large ) { cell.setAttribute("class","large"); cell.className = "large" }
       if( !large) cell.onclick = function(){top.location.href='./photo_of.html?name='+response.name;}
       next_pic++;
-      
+*/
+  		
+			//build image
       var img = document.createElement("img");
       c = "photo"; 
       if( large ) c += " large"
       img.setAttribute("class",c);
       img.className = c;
       img.src = response.converted;
-      
-      cell.appendChild(img);
-      cur_row.appendChild(cell);
-      document.getElementById("container").appendChild(cur_row);
-            if( img.clientWidth > 200 ) {
+ 			img.onclick = function(){top.location.href='./photo_of.html?name='+response.name;}
+      if( img.clientWidth > 200 ) {
         img.style.width = "200px"
         img.style.height = "auto"
       }
@@ -31,6 +32,22 @@ function createPhoto(response,large) {
         img.style.height = "200px";
         img.style.width = "auto"
       }
+			
+			if (large) {
+				//add image to page
+				document.getElementById("results").appendChild(img);
+			}
+			else {
+				//build frame
+				var frame = document.createElement("div");
+				frame.className = "photo_frame";
+				frame.onclick = function(){top.location.href='./photo_of.html?name='+response.name;}
+				//add image to frame
+				frame.appendChild(img);
+				//add frame to page
+				document.getElementById("results").appendChild(frame);
+			}
+
     }
    }
 }

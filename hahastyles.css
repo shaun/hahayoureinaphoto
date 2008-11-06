@@ -1,16 +1,73 @@
 body {
-  background-color: #E6E6E6;
+  background-color: #fff;
+  font-family:helvetica,arial;
+}
+
+#container {
+	width:880px;
+	text-align:left;
 }
 
 div.header {
-  width: 600px;
-  text-align: center;
-  margin-left: auto;
-  margin-right:auto;
-  color: rgb(0,0,0);
-  font-size: 40px;
-  margin-bottom: 10px;
-  font-weight: bold;
+  position:relative;
+  width: 880px;
+  height: 185px;
+  background:url(images/header.jpg);
+}
+
+#menu {
+	position:absolute;
+	top:156px;
+	height:27px;
+	right:0px;
+	color:#fff;
+}
+
+.menu_item {
+	float:left;
+	padding-top:9px;
+	height:20px;
+	background:#000;
+	color:#fff;
+	font-size:15px;
+	padding-right:20px;
+	padding-left:20px;
+	cursor:pointer;
+	text-decoration: none;
+}
+
+.menu_item_nh {
+	float:left;
+	padding-top:9px;
+	height:20px;
+	background:#000;
+	color:#fff;
+	font-size:15px;
+	padding-right:20px;
+	padding-left:20px;
+	text-decoration: none;
+}
+
+.menu_item:hover {
+  color:#fff;
+  background:#555;
+	
+}
+
+.devider {
+	padding-top:9px;
+	float:left;
+	color:#fff;
+}
+
+.photo_frame {
+	width:262px;
+	height:290px;
+	background:url(images/plrd.jpg);
+	float:left;
+	margin-right:25px;
+	padding-top:20px;
+	cursor:pointer;
 }
 
 span.h1 { 
@@ -69,10 +126,13 @@ img.large {
   width: auto;
   max-height: 400px;
   max-width: 400px;
+	padding:10px;
+	background:#fff;
+	border:solid 1px #000;
 }
 
 div.find_photos {
-  width: 700px;
+  width: 880px;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
@@ -85,9 +145,10 @@ span.find_photos {
 }
 
 div.footer {
-  width: 800px;
+  width: 880px;
   margin-left: auto;
   margin-right: auto;
+	margin-top:20px;
   text-align:center;
 }
 
@@ -103,27 +164,26 @@ a.footer:hover {
 }
 
 div.subtitle {
-  width: 700px;
+	margin-top:20px;
   margin-left: auto;
   margin-right: auto;
-  text-align: center;
-  padding-bottom: 25px;
+  text-align: left;
   font-size: 20px;
   color: black;
 }
 
 div.results {
-  width: 900px; 
+  width: 880px; 
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+	padding-top:30px;
+	padding-left:20px;
 }
 
 div.upload_now {
-  width: 700px; 
   margin-left: auto;
   margin-right: auto;
-  text-align: center;
 }
 
 a.upload_now {
@@ -138,7 +198,7 @@ a.upload_now:hover {
 }
 
 div.center {
-  width: 700px; 
+  width: 880px; 
   margin-left: auto;
   margin-right: auto;
   text-align: center;
@@ -156,15 +216,27 @@ a.nav_link:hover {
 }
 
 div.comments {
-  background-color: rgb(200,200,200);
-  width: 700px;
+  background-color: #000;
+  width: 880px;
   padding: 10px;
   margin-bottom: 20px;
 }
 
 div.comment {
-  background-color: rgb(100,100,100);
+  background-color: #fff;
   padding: 5px; 
   margin-bottom: 15px;
   text-align:left;
+}
+
+.invisifile {
+	opacity:.0001;
+	height:60px;
+	width:10px;
+	size:1;
+	font-size:100px;
+	margin-left:-1400px;
+	position:absolute;
+	top:0px;
+	left:0px;
 }
