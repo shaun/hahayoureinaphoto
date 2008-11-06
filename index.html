@@ -45,13 +45,13 @@
 	          alert("Oops. Something went wrong: " + response.message);
 	     }
      
-	     var i = 1;
+	     var index = 1;
 	     function showRecentPhotos(response,success) { 
 	        if(success) {
 	          if( response.length != 0 ) { 
-	            for(i = 1; i <= 3; i++ ) {
-	              if( response[response.length-i] ) {
-	                createPhoto(response[response.length-i],false);
+	            for(index = 1; index <= 3; index++ ) {
+	              if( response[response.length-index] ) {
+	                createPhoto(response[response.length-index],false);
 	              } else {
 	                api.getAssetList({drop_name:PHOTO_BUCKET,page:lastPage-1}, showRemainingPhotos);
 	                break;
@@ -68,7 +68,7 @@
 	     function showRemainingPhotos(response,success) {
 	        if(success) {
 	          count = 1;
-	          for(i = i; i <= 3; i++ ) {
+	          for(index = index; index <= 3; index++ ) {
 	            createPhoto(response[response.length-count],false)
 	            count++;
 	          }

@@ -3,7 +3,8 @@ var next_pic = 1;
 function createPhoto(response,large) {
   if( response.type == "image" ) {
     if( response.converted != null && response.converted != "" ) {
-    
+      
+
 			//build image
       var img = document.createElement("img");
       c = "photo"; 
@@ -11,7 +12,7 @@ function createPhoto(response,large) {
       img.setAttribute("class",c);
       img.className = c;
       img.src = response.converted;
- 			img.onclick = function(){top.location.href='./photo_of.html?name='+response.name;}
+ 			if(!large) img.onclick = function(){top.location.href='./photo_of.html?name='+response.name;}
       if( img.clientWidth > 200 ) {
         img.style.width = "200px"
         img.style.height = "auto"

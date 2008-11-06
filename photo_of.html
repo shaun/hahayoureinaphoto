@@ -59,8 +59,10 @@
 	       document.getElementById("upload_now").href = "./upload.html?name=" + rname;
 	       api.getAsset({drop_name:PHOTO_BUCKET,asset_name:aname},showPic);
 	    }
-	    else
-	       alert("Oops. Something went wrong: " + response.message);
+	    else {
+	      document.getElementById("results").innerHTML = "Sorry, there is no photo here."
+	      document.getElementById("comment_on").style.display = "none"
+	    }
 	   }
        
 	   function showPic(response,success) {
@@ -98,7 +100,7 @@
 	      createComment(response);
 	      document.getElementById("comments").style.display = ""
 	      location.hash = "comment_" + response.id
-	      document.getElementById("comment_body").innerHTML = ""
+	      document.getElementById("comment_body").value = ""
 	    } else
 	      alert("Oops. Something went wrong: " + response.message);
 	   }

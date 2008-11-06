@@ -44,7 +44,7 @@
 			</div>
 			<br style="clear:both;"><br/>
 			<div style="float:left; width:300px; padding-top:20px;">This is a photo of:</div>
-	    <div style="float:left"><input type="text" id="name" style="border:solid 3px #ccc; width:400px; font-size:40px; padding:5px; height:50px;" /></div>
+	    <div style="float:left"><input type="text" id="name1" style="border:solid 3px #ccc; width:400px; font-size:40px; padding:5px; height:50px;" /></div>
 			<br style="clear:both;"><br>
 	    <input type="submit" value="Upload This Photo!" onclick="upload_photo()" style="width:200px; height:60px; margin-left:300px;" />
 	  </div>  
@@ -58,12 +58,12 @@
 	    thename = unescape(sname);
 	    if(thename == "") thename = "someone"
 	    document.getElementById("subtitle").innerHTML = "Upload an embarrassing photo of " + thename + " now!"
-	    document.getElementById("name").value = unescape(sname);
+	    document.getElementById("name1").value = unescape(sname);
     
 	    api.uploadFileForm({drop_name:PHOTO_BUCKET},done_uploading,{form_id:"upload_form",show_label:false,show_submit_button:false,insert_before:"insert", file_input_css: "invisifile"});
   
 	    function upload_photo() {
-	      if( document.getElementById("name").value == "" ) {
+	      if( document.getElementById("name1").value == "" ) {
 	        alert("You have to tell us who this is a photo of!");
 	        return;
 	      }
@@ -74,7 +74,7 @@
 	    function done_uploading(response,success) {
 	      if(success) {
 	        if( response.type == "image" ) { 
-	          noteName = document.getElementById("name").value
+	          noteName = document.getElementById("name1").value
 	          noteName = noteName.replace(/[^A-Za-z]+/g,"-"); 
 	          noteName = noteName.replace(/-+/g,"-"); 
           

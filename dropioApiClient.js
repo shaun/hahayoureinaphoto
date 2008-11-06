@@ -524,6 +524,7 @@ DropioApiClient.local = false; // for local dev, this should be true
 ***************************************************/
 DropioApiClient.AIM = {};
 DropioApiClient.AIM.call_in_progress = false;
+DropioApiClient.AIM.watchers = []; // keep list of watchers created so we can destroy them later -- hack for safari
 DropioApiClient.AIM.submit = function(form_elem,callback,upload) {
   if( DropioApiClient.AIM.call_in_progress ) return;
   DropioApiClient.AIM.call_in_progress = true;
@@ -545,7 +546,10 @@ DropioApiClient.AIM.submit = function(form_elem,callback,upload) {
 DropioApiClient.AIM.addWatcherIframe = function(name,upload) {  
   // the iframe that watches the response coming into the first iframe
   var watcher_host = upload ? DropioApiClient.UPLOAD_HOST : ((DropioApiClient.local ? DropioApiClient.HOST : DropioApiClient.API_HOST) + "javascripts/");
-  var i_watcher = DOMHelper.createElement("iframe",{"style":"width:0px;height:0px;border:0px","src":watcher_host+"js_api_watcher.html#"+DropioApiClient.xd_path+"&"+name+"&0","name":name+"_watcher","id":name+"_watcher"})
+  var watcher_id = name+"_watcher_" + ((Math.round(Math.random()*9999999)))
+  var i_watcher = DOMHelper.createElement("iframe",{"style":"width:0px;height:0px;border:0px","src":watcher_host+"js_api_watcher.html#"+DropioApiClient.xd_path+"&"+name+"&0","name":name+"_watcher","id":watcher_id})
+  
+  DropioApiClient.AIM.watchers.push(watcher_id); // part of the hack for safari so back button works
   
   document.body.appendChild(i_watcher);
 };
@@ -567,9 +571,9 @@ DropioApiClient.AIM.parseResult = function(name,json,more) {
   DropioApiClient.AIM.responseJSON = DropioApiClient.AIM.responseJSON.substring(beg,end+1);
 
   // clean up
-  DOMHelper.removeElement(name);
-  DOMHelper.removeElement(name+"_watcher")
-
+  DropioApiClient.AIM.cleanup(name,navigator.appVersion.indexOf("Safari") != -1 ? [] : DropioApiClient.AIM.watchers); // dont delete watcherd in safari since it causes it to crash
+  DropioApiClient.AIM.watchers = []
+  
   // callback time
   try {
     json = eval("("+DropioApiClient.AIM.responseJSON+")");
@@ -585,9 +589,14 @@ DropioApiClient.AIM.parseResult = function(name,json,more) {
   DropioApiClient.AIM.responseJSON = "";
   DropioApiClient.AIM.call_in_progress = false;
   
-  i.onComplete(json,success);
- 
-  
+  if(i)
+    i.onComplete(json,success);  
+};
+
+DropioApiClient.AIM.cleanup = function(name,watchers) {
+  DOMHelper.removeElement(name);
+  while(w = watchers.pop()) // remove all iframes since safari generates a couple of them...
+    DOMHelper.removeElement(w);
 };
  
 /**
@@ -618,7 +627,7 @@ var DOMHelper = {
   
   removeElement: function(id) {
     var x = DOMHelper.getElementById(id);
-    if(x.parentNode)
+    if(x && x.parentNode)
       x.parentNode.removeChild(x);
   },
   
