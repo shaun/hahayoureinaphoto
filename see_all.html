@@ -14,6 +14,8 @@
   	<form method="get" action="./photos_of.html">	
 	  <div class="header">
 	    <div id="menu">
+	    	<a href="about.html" class="menu_item">ABOUT</a>
+				<a class="devider">|</a>
 	    	<a href="index.html" class="menu_item">HOME</a>
 				<a class="devider">|</a>
 				<a href="upload.html" class="menu_item">UPLOAD A PHOTO</a>
@@ -35,11 +37,10 @@
 	    <a href="" class="nav_link" id="next" style="display:none">Next</a>
 	  </div>
   
-  
-
-  
-  
-	  <script>
+		</div>
+	</center>
+	
+		  <script>
 	     document.getElementById("subtitle").innerHTML = "All Embarrassing Photos - Page #" + page;
      
 	   api.getAssetList({drop_name:PHOTO_BUCKET,page:page},showPics);
@@ -71,8 +72,6 @@
 	     }
 	   }
 	  </script>
-		</div>
-	</center>
 </body>
 </html>
     

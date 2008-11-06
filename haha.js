@@ -3,19 +3,7 @@ var next_pic = 1;
 function createPhoto(response,large) {
   if( response.type == "image" ) {
     if( response.converted != null && response.converted != "" ) {
-      
-/*
-			if( cur_row == null || next_pic == 5 ) {
-        cur_row = document.createElement("tr");
-        next_pic = 1;
-      }
-      
-      var cell = document.createElement("td");
-      if( large ) { cell.setAttribute("class","large"); cell.className = "large" }
-      if( !large) cell.onclick = function(){top.location.href='./photo_of.html?name='+response.name;}
-      next_pic++;
-*/
-  		
+    
 			//build image
       var img = document.createElement("img");
       c = "photo"; 

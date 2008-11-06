@@ -15,6 +15,8 @@
   	<form method="get" action="./photos_of.html">	
 	  <div class="header">
 	    <div id="menu">
+	    	<a href="about.html" class="menu_item">ABOUT</a>
+				<a class="devider">|</a>
 	    	<a href="index.html" class="menu_item">HOME</a>
 				<a class="devider">|</a>
 				<a href="upload.html" class="menu_item">UPLOAD A PHOTO</a>
@@ -41,9 +43,11 @@
 	  <div class="upload_now">
 	    <a id="upload_now" href="#" class="upload_now"></a>
 	  </div>
-  
-  
-  
+ 
+	</div>
+	</center>
+	
+	  
 	  <script>
 	   api.getAsset({drop_name:HAHA_DATABASE_NAMES,asset_name:aname},lookup_done);
    
@@ -99,8 +103,6 @@
 	      alert("Oops. Something went wrong: " + response.message);
 	   }
 	  </script>
-	</div>
-	</center>
 </body>
 </html>
     

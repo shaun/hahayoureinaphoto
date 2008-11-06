@@ -11,6 +11,8 @@
   	<form method="get" action="./photos_of.html">	
 	  <div class="header">
 	    <div id="menu">
+	    	<a href="about.html" class="menu_item">ABOUT</a>
+				<a class="devider">|</a>
 	    	<a href="index.html" class="menu_item">HOME</a>
 				<a class="devider">|</a>
 				<a href="upload.html" class="menu_item">UPLOAD A PHOTO</a>
@@ -27,14 +29,16 @@
 	
 			<div style="text-align:right; margin-right:60px;"><a href="./see_all.html?page=1" style="font-size:18px; color:#575757; padding-top:15px;">See All Embarrassing Photos >></a></div>
   
+	</div>
+  </center>
   
-	  <script>
+  	  <script>
 	    api.getDrop({drop_name:PHOTO_BUCKET}, getRecentPhotos);
     
 	    var lastPage = 0;
 	    function getRecentPhotos(response,success) {
 	        if(success) {
-	          lastPage = Math.ceil(response.asset_count / 30)
+	          lastPage = Math.ceil(response.asset_count / 30);
 	          api.getAssetList({drop_name:PHOTO_BUCKET,page:lastPage}, showRecentPhotos);
 	        }
 	        else
@@ -44,10 +48,10 @@
 	     var i = 1;
 	     function showRecentPhotos(response,success) { 
 	        if(success) {
-	          if( response.length != 0 ) {
+	          if( response.length != 0 ) { 
 	            for(i = 1; i <= 3; i++ ) {
 	              if( response[response.length-i] ) {
-	                createPhoto(response[response.length-i],false)
+	                createPhoto(response[response.length-i],false);
 	              } else {
 	                api.getAssetList({drop_name:PHOTO_BUCKET,page:lastPage-1}, showRemainingPhotos);
 	                break;
@@ -73,7 +77,5 @@
 	          alert("Oops. Something went wrong: " + response.message);
 	     }
 	  </script>
-	</div>
-  </center>
 </body>
 </html>

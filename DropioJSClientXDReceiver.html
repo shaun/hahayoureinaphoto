@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head></head>
 <body><script>
-vals = window.location.hash.split("&",4);
+vals = unescape(window.location.hash).split("&",4);
 id = vals[0].replace("#","");
 more = (vals[1] != "0");
 nextChunk = vals[1];
@@ -9,9 +9,8 @@ js_watcher_href = vals[2];
 json = vals[3];
 if(more) {
   parent.DropioApiClient.AIM.parseResult(id,json,true);
-  window.location.hash = "#";
-  xd_path = window.location.href.substring(0,window.location.href.length-1);
-  window.location.href = js_watcher_href + xd_path + "&" + id + "&" + nextChunk
+  xd_path = window.location.href.split("#",1)[0]
+  window.location.href = js_watcher_href + "#" + xd_path + "&" + id + "&" + nextChunk
 }
 else
     parent.DropioApiClient.AIM.parseResult(id,json,false);

@@ -537,12 +537,12 @@ DropioApiClient.AIM.submit = function(form_elem,callback,upload) {
   
   var i_target = DOMHelper.getElementById(name);
   i_target.onComplete = callback;
- 
+
   form_elem.target = name;
   form_elem.submit();
 };
  
-DropioApiClient.AIM.addWatcherIframe = function(name,upload) {
+DropioApiClient.AIM.addWatcherIframe = function(name,upload) {  
   // the iframe that watches the response coming into the first iframe
   var watcher_host = upload ? DropioApiClient.UPLOAD_HOST : ((DropioApiClient.local ? DropioApiClient.HOST : DropioApiClient.API_HOST) + "javascripts/");
   var i_watcher = DOMHelper.createElement("iframe",{"style":"width:0px;height:0px;border:0px","src":watcher_host+"js_api_watcher.html#"+DropioApiClient.xd_path+"&"+name+"&0","name":name+"_watcher","id":name+"_watcher"})
@@ -553,23 +553,23 @@ DropioApiClient.AIM.addWatcherIframe = function(name,upload) {
 DropioApiClient.AIM.responseJSON = "";
 DropioApiClient.AIM.parseResult = function(name,json,more) {
   DropioApiClient.AIM.responseJSON += json;
- 
+
   // if there is more of the message, wait for it
   if(more) return;
     
   var i = DOMHelper.getElementById(name);
- 
+
   // get the json from the identifer in the url
   var beg = DropioApiClient.AIM.responseJSON.indexOf("{");
   if( DropioApiClient.AIM.responseJSON.indexOf("[") < beg ) beg = DropioApiClient.AIM.responseJSON.indexOf("[");
   var end = DropioApiClient.AIM.responseJSON.lastIndexOf("}");
   if( DropioApiClient.AIM.responseJSON.lastIndexOf("]") > end ) end = DropioApiClient.AIM.responseJSON.lastIndexOf("]");
   DropioApiClient.AIM.responseJSON = DropioApiClient.AIM.responseJSON.substring(beg,end+1);
-  
+
   // clean up
   DOMHelper.removeElement(name);
   DOMHelper.removeElement(name+"_watcher")
-  
+
   // callback time
   try {
     json = eval("("+DropioApiClient.AIM.responseJSON+")");
@@ -618,7 +618,8 @@ var DOMHelper = {
   
   removeElement: function(id) {
     var x = DOMHelper.getElementById(id);
-    x.parentNode.removeChild(x);
+    if(x.parentNode)
+      x.parentNode.removeChild(x);
   },
   
   insertBefore: function(id,elem) {
